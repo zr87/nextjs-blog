@@ -3,8 +3,16 @@ import {getAllPostIds, getPostData} from "../../lib/posts";
 import utilStyles from '../../styles/utils.module.scss'
 import Head from "next/head";
 import cx from 'classnames'
+import {GetStaticPaths, GetStaticProps} from "next";
 
-export default function Post({ postData }) {
+export default function Post({
+     postData
+    }: {
+    postData: {
+        title: string
+        id: number
+        body: string
+    }}) {
     return(
 
         <Layout>
@@ -20,7 +28,7 @@ export default function Post({ postData }) {
     )
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
     // Return a list of possible value for id
     const paths = await getAllPostIds()
     // console.log(paths)
@@ -31,9 +39,9 @@ export async function getStaticPaths() {
 
 }
 
-export async function getStaticProps({ params }) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
     // Fetch necessary data for the blog post using params.id
-    const postData = await getPostData(params.id)
+    const postData = await getPostData(params.id as string)
 
     return {
         props: {

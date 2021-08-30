@@ -1,18 +1,22 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.scss'
-import { getPostsData } from '../lib/posts'
+import { getPostsData, Post } from '../lib/posts'
 import Link from "next/link";
+import {GetServerSideProps} from "next";
 
-export default function Home({ allPostsData }) {
+export default function Home(
+    { allPostsData }: { allPostsData: Post[]}
+) {
     return (
         <Layout home>
             <Head>
                 <title>{siteTitle}</title>
             </Head>
             <section className={utilStyles.headingMd}>
-                <p>Hello, I'm <strong>Zoltan</strong>. I'm a software developer focused on web technologies. Open to hire.
+                <p>Hello, I'm <strong>Zoltan</strong>. I'm a software developer focused on web technologies.
                     <br/>
+                    Open to hire.
                     Contact me on <a href="https://www.linkedin.com/in/zoltanrakottyay/" target="_blank">linkedin</a>
                 </p>
                 <p>
@@ -54,9 +58,8 @@ export default function Home({ allPostsData }) {
 
 // Because getServerSideProps is called at request time,
 // its parameter (context) contains request specific parameters.
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
     const data = await getPostsData()
-    //console.log("context", context)
 
     return {
         props: {
